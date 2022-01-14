@@ -1,0 +1,19 @@
+bs in cs
+ms in security
+
+started an industrial control company in college 3 Million acres
+created ios app 5k downloads
+
+Security Reverse engineer
+dev ops
+kubernetes istio
+back end, python, php
+little bit of front end, html, ccs, js, jquery
+embeded controllers, arduio, esp32, ntm32
+PLC controllers industrial design
+Electronic PCB design
+
+
+looking to go deep on backend, interested  scalability and technology focused company
+
+normally code in debugger so I can see everything in scope, so this may be a struggle
