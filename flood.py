@@ -18,7 +18,7 @@ def print_grid(grid):
 
 print_grid(grid)
 
-def get_all_neighbors_count(color, i, j, c, visited=None):
+def get_all_neighbors_count(color, i, j, visited=None):
 	offsets = [[1,0], [0,1], [-1,0], [0,-1]]
 
 	if visited == None:
@@ -30,19 +30,16 @@ def get_all_neighbors_count(color, i, j, c, visited=None):
 		try:
 			if grid[i+offset[0]][j+offset[1]] == color:
 				if [i+offset[0], j+offset[1]] not in visited:
-					visited = get_all_neighbors_count(color, i+offset[0], j+offset[1], c, visited)
+					visited = get_all_neighbors_count(color, i+offset[0], j+offset[1], visited)
 		except IndexError:
 			pass
 
 	return visited
 
 for i,_ in enumerate(grid):
-	for j,_ in enumerate(grid[i]):
-		for c,color in enumerate(colors):
-			if grid[i][j] == color:
-				grid_vals[i,j,color] = len(get_all_neighbors_count(color, i, j, c))
-
+	for j,color in enumerate(grid[i]):
+		if grid[i][j] == color:
+			grid_vals[i,j,color] = len(get_all_neighbors_count(color, i, j))
 
 print(grid_vals)
-
 
