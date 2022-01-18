@@ -4,53 +4,53 @@ grid = [
 	['r','g','g','g']
 ]
 
-colors = []
-for i in range(len(grid)):
-	for j in range(len(grid[0])):
-		if grid[i][j] not in colors:
-			colors.append(grid[i][j])
-
 def print_grid(grid):
 	for line in grid:
 		print(line)
 
 print_grid(grid)
 
-def get_neighbors(color, i, j):
-	offsets = [[1,0], [0,1], [-1,0], [0,-1]]
+class Node():
+	def __init__(self,c,i,j,visited):
+		self.c = c
+		self.i = i
+		self.j = j
+		visited[i,j] = None
+		self.visited = visited
 
-	neighbors = []
-	for offset in offsets:
-		try:
-			if grid[i+offset[0]][j+offset[1]] == color:# and [i+offset[0], j+offset[1]] not in visited:
-					neighbors.append((color, i+offset[0], j+offset[1]))
-		except IndexError:
-			pass
+	@property
+	def unvisited_neighbors(self):
+		offsets = [[1,0], [0,1], [-1,0], [0,-1]]
 
-	return neighbors
+		neighbors = []
+		for offset in offsets:
+			try:
+				if grid[self.i+offset[0]][self.j+offset[1]] == self.c:# and [i+offset[0], j+offset[1]] not in visited:
+					if (self.i+offset[0], self.j+offset[1]) not in self.visited:
+						neighbors.append(Node(color, self.i+offset[0], self.j+offset[1],visited))
+			except IndexError:
+				pass
 
-stack = []
-visited = {}
+		return neighbors
+
+trees = {}
 max_len = 0
 
 for i,_ in enumerate(grid):
 	for j,color in enumerate(grid[i]):
-		stack.append((grid[i][j],i,j))
+		stack = []
+		visited = {}
+		stack.append(Node(grid[i][j],i,j,visited))
 
-print(stack)
-while len(stack) > 0:
-	c,i,j = stack.pop()
 
-	neighbors = get_neighbors(c,i,j)
+		while len(stack) > 0:
+			node = stack.pop()
 
-	input()
-	print(visited)
-	print(stack)
-	if (i,j) not in visited:
-		visited[i,j] = len(neighbors)
+			neighbors = node.unvisited_neighbors
 
-	unvisited_neighbors = [neighbor for neighbor in neighbors if (neighbor[0],neighbor[1]) not in visited]
-	stack.extend(unvisited_neighbors)
+			stack.extend(neighbors)
 
-print(visited)
+		max_len = max(max_len, len(visited))
+		trees[i,j] = len(visited)
+
 print(max_len)
