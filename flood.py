@@ -21,20 +21,20 @@ class Node():
 	@property
 	def unvisited_neighbors(self):
 		offsets = [[1,0], [0,1], [-1,0], [0,-1]]
-		x,y = self.i+offset[0],self.j+offset[1]
 
 		neighbors = []
 		for offset in offsets:
+			x,y = self.i+offset[0],self.j+offset[1]
 			try:
 				if grid[x][y] == self.c:
 					if (x, y) not in self.visited:
-						neighbors.append(Node(color, x, self.y,visited))
+						neighbors.append(Node(color, x, y,visited))
 			except IndexError:
 				pass
 
 		return neighbors
 
-trees = {}
+tree_lens = {}
 max_len = 0
 
 for i,_ in enumerate(grid):
@@ -51,6 +51,7 @@ for i,_ in enumerate(grid):
 			stack.extend(neighbors)
 
 		max_len = max(max_len, len(visited))
-		trees[i,j] = len(visited)
+		tree_lens[i,j] = len(visited)
 
+print(tree_lens)
 print(max_len)
