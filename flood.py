@@ -21,13 +21,14 @@ class Node():
 	@property
 	def unvisited_neighbors(self):
 		offsets = [[1,0], [0,1], [-1,0], [0,-1]]
+		x,y = self.i+offset[0],self.j+offset[1]
 
 		neighbors = []
 		for offset in offsets:
 			try:
-				if grid[self.i+offset[0]][self.j+offset[1]] == self.c:# and [i+offset[0], j+offset[1]] not in visited:
-					if (self.i+offset[0], self.j+offset[1]) not in self.visited:
-						neighbors.append(Node(color, self.i+offset[0], self.j+offset[1],visited))
+				if grid[x][y] == self.c:
+					if (x, y) not in self.visited:
+						neighbors.append(Node(color, x, self.y,visited))
 			except IndexError:
 				pass
 
@@ -41,7 +42,6 @@ for i,_ in enumerate(grid):
 		stack = []
 		visited = {}
 		stack.append(Node(grid[i][j],i,j,visited))
-
 
 		while len(stack) > 0:
 			node = stack.pop()
