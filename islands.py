@@ -1,12 +1,14 @@
 # island remover: find cells that are not connected to the edge
 
 grid = [
+	#0,0            0,len(grid[0])
 	[0, 1, 0, 0, 0, 0],
 	[0, 1, 0, 1, 0, 0],
 	[0, 1, 1, 1, 0, 0],
 	[0, 0, 0, 0, 1, 0],
 	[0, 1, 0, 1, 0, 0],
 	[0, 1, 0, 0, 0, 1],
+	#len(grid),0    len(grid), len(grid[0])
 ]
 
 def get_populated_neighbors(grid, i, j):
@@ -23,11 +25,10 @@ def get_populated_neighbors(grid, i, j):
 	return neighbors
 
 
-def get_path(grid, i, j):
+def get_path(grid, stack):
 	visited = set()
-	stack = [[i, j]]
 
-	while len(stack) > 0:
+	while len(stack) > 0:	
 		node = stack.pop()
 
 		neighbors = get_populated_neighbors(grid, *node)
@@ -35,16 +36,54 @@ def get_path(grid, i, j):
 		#list comp?
 		for neighbor in neighbors:
 			if neighbor not in visited:
-				stack.append(neighbor)
+				stack.add(neighbor)
 				visited.add(neighbor)
 
 	return visited
 
+def get_edges(grid):
+	edges = set()
+	# 0,0 -> 0,len(grid[0])
+	for i in range(0, len(grid)):
+		if grid[0][i] == 1:
+			edges.add((0,i))
+	# 0,len(grid[0]) -> len(grid),len(grid[0])
+	for i in range(0, len(grid)):
+		if grid[i][len(grid[0])-1] == 1:
+			edges.add((i,len(grid[0])-1))
+	# len(grid), len(grid[0]) -> len(grid),0
+	for i in range(0, len(grid[0])):
+		if grid[len(grid)-1][i] == 1:
+			edges.add((len(grid)-1,i))
+	# len(grid),0 -> 0,0
+	for i in range(0, len(grid)):
+		if grid[len(grid)-1][i] == 1:
+			edges.add((len(grid)-1,i))
 
-for i in range(len(grid)):
-	for j in range(len(grid[i])):
-		if grid[i][j] == 1:
-			print(get_path(grid, i, j))
+	return edges
+
+
+
+edges = get_edges(grid)
+
+non_islands = get_path(grid, edges)
+
+print(non_islands)
+
+for i in grid:
+	print(i)
+
+print()
+
+for i,_ in enumerate(grid):
+	for j,val in enumerate(grid[i]):
+		if (i,j) not in non_islands:
+			grid[i][j] = 0
+
+
+for i in grid:
+	print(i)
+
 
 
 
